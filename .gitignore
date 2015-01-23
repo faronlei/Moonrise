@@ -1,0 +1,4 @@
+/Appdata/*
+/vendor/*
+.DS_Store
+Thumbs.db

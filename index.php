@@ -5,6 +5,8 @@
  * @author itsmikej
  */
 
+# todo 整合入口所有定义
+
 define('MR_TIMESTAMP', time());
 define('MR_DATETIME', date('Y-m-d H:i:s', MR_TIMESTAMP));
 
@@ -25,6 +27,8 @@ if (PHP_SAPI == 'cli' || defined('STDIN')) {
 } else {
     define('MR_INTERFACE', 'web');
 }
+
+define('MR_DEBUG', false);
 
 $app = new Moonrise\Start();
 

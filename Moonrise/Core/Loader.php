@@ -25,6 +25,7 @@ class Loader
      */
     public static function loadConfig($name)
     {
+        $name = ucfirst($name);
         if (isset(self::$_config[$name])) {
             return self::$_config[$name];
         }

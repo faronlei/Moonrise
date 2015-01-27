@@ -7,6 +7,8 @@
 
 namespace Moonrise\Core;
 
+use Moonrise\Component\Log;
+
 class Exception
 {
     public static function initExceptionHandler()
@@ -14,10 +16,9 @@ class Exception
         set_exception_handler(array(__CLASS__, 'exceptionHandler'));
     }
 
-    public static function exceptionHandler(Exception $e)
+    public static function exceptionHandler(\Exception $e)
     {
         $exception_name = get_class($e);
-        echo $e->getMessage();
-        # todo 记录日志
+        Log::getInstance('exception')->exceptionHandler($e, $exception_name);
     }
 }

@@ -8,6 +8,8 @@
 
 namespace Moonrise\Core;
 
+use Monolog\Processor\WebProcessor;
+
 class Request
 {
     private $properties;

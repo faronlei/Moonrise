@@ -7,6 +7,7 @@
 
 namespace Moonrise;
 
+use Moonrise\Component\Log;
 use Moonrise\Core\Error;
 use Moonrise\Core\Exception;
 use Moonrise\Core\Uri;
@@ -35,6 +36,9 @@ class Start
 
     public function run()
     {
+        //throw new \Exception('mikej');
+
+        Log::getInstance('aa')->log('test', array(), 'test/test');
         $route = $this->uri->getRequest();
 
         $class = str_replace(array('\\\\'), '\\', trim('Control\\'.$route['directory'].'\\'.$route['class'], '/'));

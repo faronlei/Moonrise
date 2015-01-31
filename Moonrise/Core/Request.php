@@ -38,23 +38,26 @@ class Request
 
     public function __construct()
     {
-        if (isset($_SERVER['REQUEST_METHOD'])) {
-            $this->_get     = & $_GET;
-            $this->_post    = & $_POST;
-            $this->_request = & $_REQUEST;
-            $this->_cookie  = & $_COOKIE;
-            $this->_file    = & $_FILES;
-            retrun;
+        switch (MR_INTERFACE) {
+            case 'web':
+                $this->_get     = & $_GET;
+                $this->_post    = & $_POST;
+                $this->_request = & $_REQUEST;
+                $this->_cookie  = & $_COOKIE;
+                $this->_file    = & $_FILES;
+                break;
+            case 'cli':
+                # 将cli的参数解析到 _request
+                foreach ($_SERVER['argv'] as $param) {
+                    if (strpos($param, '=')) {
+                        list($key, $value) = explode('=', $param);
+                        $this->_request[$key] = $value;
+                    }
+                }
+                break;
+            default:
+                break;
         }
-
-        # 将cli的参数解析到 _request
-        foreach ($_SERVER['argv'] as $param) {
-            if (strpos($param, '=')) {
-                list($key, $value) = explode('=', $param);
-                $this->_request[$key] = $value;
-            }
-        }
-
     }
 
     /**

@@ -5,10 +5,15 @@
 
 namespace Control;
 
+use Moonrise\Core\Request;
+
 class Index
 {
     public function index()
     {
-        //echo "test";
+        # 使用注册器
+        $a = new Request();
+        $b = $a->request('mikej', 1);
+        dump($b);
     }
 }

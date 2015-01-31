@@ -16,6 +16,7 @@ return array(
     'channel' => array(
         LOG_CHANNEL_DEFAULT,
         LOG_CHANNEL_ERROR_HANDLER,
+        LOG_CHANNEL_EXCEPTION,
         LOG_CHANNEL_DB
     )
 );

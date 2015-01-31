@@ -35,6 +35,26 @@ class Registry
 
     public function set($key, $value)
     {
+        if (isset($this->_values[$key])) {
+            return false;
+        }
         $this->_values[$key] = $value;
+    }
+
+    public static function getComponent($name)
+    {
+        self::checkName($name);
+        if (null === ($component = self::getInstance()->get($name))) {
+            $class_name = 'Moonrise\\Component\\' . ucfirst($name);
+            $component = new $class_name;
+            self::getInstance()->set($name, $component);
+        }
+
+        return $component;
+    }
+
+    protected static function checkName($name)
+    {
+        return 1;
     }
 }

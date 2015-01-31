@@ -51,7 +51,6 @@ class Log
         $this->generatePath($path);
 
         $this->logger->pushHandler(new StreamHandler($path, Logger::NOTICE));
-        # $this->logger->pushProcessor(new WebProcessor());
         $this->logger->addNotice($message, $context);
     }
 
@@ -90,6 +89,7 @@ class Log
         $this->generatePath($path);
 
         $this->logger->pushHandler(new StreamHandler($path, $level));
+        $this->logger->pushProcessor(new WebProcessor());
         $this->logger->pushHandler(new FirePHPHandler());
         $this->logger->addInfo($message, $context);
     }

@@ -22,3 +22,11 @@ if (!function_exists('remove_invisible_characters')) {
         return $str;
     }
 }
+
+if (!function_exists('show_error')) {
+    function show_error($message)
+    {
+        # todo 界面友好
+        die($message);
+    }
+}

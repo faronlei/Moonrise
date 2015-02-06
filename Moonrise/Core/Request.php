@@ -58,6 +58,7 @@ class Request
             default:
                 break;
         }
+        # todo csrf 验证
     }
 
     /**

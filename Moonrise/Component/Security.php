@@ -8,6 +8,8 @@
 
 namespace Moonrise\Component;
 
+use Moonrise\Core\Loader;
+
 class Security
 {
     /**
@@ -80,31 +82,29 @@ class Security
         "([\"'])?data\s*:[^\\1]*?base64[^\\1]*?,[^\\1]*?\\1?"
     );
 
+    protected $_config;
+
     public function __construct()
     {
+        $this->_config = Loader::loadConfig('config');
+
         // Is CSRF protection enabled?
-        if (config_item('csrf_protection') === TRUE)
-        {
+        if ($this->_config['csrf_protection'] === true) {
             // CSRF config
-            foreach (array('csrf_expire', 'csrf_token_name', 'csrf_cookie_name') as $key)
-            {
-                if (FALSE !== ($val = config_item($key)))
-                {
+            foreach (array('csrf_expire', 'csrf_token_name', 'csrf_cookie_name') as $key) {
+                if (false !== ($val = config_item($key))) {
                     $this->{'_'.$key} = $val;
                 }
             }
 
             // Append application specific cookie prefix
-            if (config_item('cookie_prefix'))
-            {
-                $this->_csrf_cookie_name = config_item('cookie_prefix').$this->_csrf_cookie_name;
+            if (config_item('cookie_prefix')) {
+                $this->_csrf_cookie_name = $this->_config['cookie_prefix'].$this->_csrf_cookie_name;
             }
 
             // Set the CSRF hash
             $this->_csrf_set_hash();
         }
-
-        log_message('debug', "Security Class Initialized");
     }
 
     // --------------------------------------------------------------------
@@ -143,8 +143,6 @@ class Security
         $this->_csrf_set_hash();
         $this->csrf_set_cookie();
 
-        log_message('debug', 'CSRF token verified');
-
         return $this;
     }
 
@@ -158,16 +156,13 @@ class Security
     public function csrf_set_cookie()
     {
         $expire = time() + $this->_csrf_expire;
-        $secure_cookie = (config_item('cookie_secure') === TRUE) ? 1 : 0;
+        $secure_cookie = (config_item('cookie_secure') === true) ? 1 : 0;
 
-        if ($secure_cookie && (empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) === 'off'))
-        {
-            return FALSE;
+        if ($secure_cookie && (empty($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) === 'off')) {
+            return false;
         }
 
-        setcookie($this->_csrf_cookie_name, $this->_csrf_hash, $expire, config_item('cookie_path'), config_item('cookie_domain'), $secure_cookie);
-
-        log_message('debug', "CRSF cookie Set");
+        setcookie($this->_csrf_cookie_name, $this->_csrf_hash, $expire, $this->_config['cookie_path'], $this->_config['cookie_domain'], $secure_cookie);
 
         return $this;
     }
@@ -441,7 +436,6 @@ class Security
             return ($str == $converted_string) ? TRUE: FALSE;
         }
 
-        log_message('debug', "XSS Filtering completed");
         return $str;
     }
 

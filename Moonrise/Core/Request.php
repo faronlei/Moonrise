@@ -20,6 +20,14 @@ class Request
         'f'   => array(),
     );
 
+    private $_filter_vars = array(
+        'g'   => array(),
+        'p'   => array(),
+        'c'   => array(),
+        'r'   => array(),
+        'f'   => array(),
+    );
+
     private $_get;
     private $_post;
     private $_request;
@@ -116,34 +124,74 @@ class Request
         }
     }
 
+    /**
+     * 取$_GET参数
+     * @param $name
+     * @param null $var_type
+     * @param array $options
+     * @return array|null
+     */
     public function get($name, $var_type=null, array $options=array())
     {
         return $this->_getVar('g', $name, $var_type, $options);
     }
 
+    /**
+     * 取$_POST参数
+     * @param $name
+     * @param null $var_type
+     * @param array $options
+     * @return array|null
+     */
     public function post($name, $var_type=null, array $options=array())
     {
         return $this->_getVar('p', $name, $var_type, $options);
     }
 
+    /**
+     * 取$_REQUEST参数
+     * @param $name
+     * @param null $var_type
+     * @param array $options
+     * @return array|null
+     */
     public function request($name, $var_type=null, array $options=array())
     {
         return $this->_getVar('r', $name, $var_type, $options);
     }
 
+    /**
+     * 取$_COOKIE参数
+     * @param $name
+     * @param null $var_type
+     * @param array $options
+     * @return array|null
+     */
     public function cookie($name, $var_type=null, array $options=array())
     {
         return $this->_getVar('c', $name, $var_type, $options);
     }
 
+    /**
+     * 取$_FILE参数
+     * @param $name
+     * @param null $var_type
+     * @param array $options
+     * @return array|null
+     */
     public function file($name, $var_type=null, array $options=array())
     {
         return $this->_getVar('f', $name, $var_type, $options);
     }
 
+
     private function _getVar($var_class, $name, $var_type=null, $options=array())
     {
-        if ($var_type !== null) {
+        if (isset($this->_filter_vars[$var_class][$name])) {
+            return $this->_filter_vars[$var_class][$name];
+        }
+
+        #if ($var_type !== null) {
             if (empty($options)) {
                 $options = array();
             }
@@ -152,7 +200,7 @@ class Request
                     $name => array($var_type, $options)
                 )
             ));
-        }
+        #}
 
         if (!isset($this->_vars[$var_class][$name])) {
             return null;
@@ -182,8 +230,21 @@ class Request
             $this->_filter = Registry::getComponent('filter');
             $filter_value = $this->_filter->filter($value, $var_params[0], $var_params[1]);
 
+            $this->_filter_vars[$var_class][$name] = $filter_value;
+
             return $filter_value;
         }
+    }
+
+    /**
+     * 判断变量是否注册
+     * @param $var_class
+     * @param $name
+     * @return bool
+     */
+    public function isRegistered($var_class, $name)
+    {
+        return isset($this->_vars[$var_class][$name]) ? true : false;
     }
 
     public function addFeedback($message)

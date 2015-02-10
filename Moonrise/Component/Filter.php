@@ -34,6 +34,8 @@ class Filter
             return null;
         }
 
+        $var_type = isset($var_type) ? $var_type : MR_TYPE_DEFAULT;
+
         switch ($var_type) {
             case MR_TYPE_BOOL:
                 $this->filterBool($value, $options);

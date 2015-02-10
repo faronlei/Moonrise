@@ -40,14 +40,14 @@ class Security
      * @var string
      * @access protected
      */
-    protected $_csrf_token_name		= 'ci_csrf_token';
+    protected $_csrf_token_name		= 'mr_csrf_token';
     /**
      * Cookie name for Cross Site Request Forgery Protection Cookie
      *
      * @var string
      * @access protected
      */
-    protected $_csrf_cookie_name	= 'ci_csrf_token';
+    protected $_csrf_cookie_name	= 'mr_csrf_cookie';
     /**
      * List of never allowed strings
      *

@@ -9,6 +9,7 @@
 namespace Moonrise\Core;
 
 use Moonrise\Component\Filter;
+use Moonrise\Component\Security;
 
 class Request
 {
@@ -41,6 +42,14 @@ class Request
      */
     private $_filter;
 
+
+    /**
+     * Security
+     *
+     * @var Security
+     */
+    private $_Security;
+
     private $_feedback = array();
 
 
@@ -48,6 +57,12 @@ class Request
     {
         switch (MR_INTERFACE) {
             case 'web':
+                # csrf 验证 todo 全局？
+                if (Loader::loadConfig('config')['csrf_protection']) {
+                    $this->_Security = Registry::getComponent('security');
+                    $this->_Security->csrf_verify();
+                }
+
                 $this->_get     = & $_GET;
                 $this->_post    = & $_POST;
                 $this->_request = & $_REQUEST;
@@ -66,7 +81,6 @@ class Request
             default:
                 break;
         }
-        # todo csrf 验证
     }
 
     /**

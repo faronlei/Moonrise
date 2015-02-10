@@ -16,10 +16,10 @@ return array(
 
 
     # CSRF相关
-    'csrf_protection' => true,
+    'csrf_protection' => false,
 
-    'csrf_cookie_name' => '',
-    'csrf_token_name' => '',
+    'csrf_cookie_name' => 'mr_csrf_cookie',
+    'csrf_token_name' => 'mr_csrf_token',
     'csrf_expire' => 7200,
 
 

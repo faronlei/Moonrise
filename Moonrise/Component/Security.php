@@ -92,13 +92,13 @@ class Security
         if ($this->_config['csrf_protection'] === true) {
             // CSRF config
             foreach (array('csrf_expire', 'csrf_token_name', 'csrf_cookie_name') as $key) {
-                if (false !== ($val = config_item($key))) {
+                if (false !== ($val = $this->_config[$key])) {
                     $this->{'_'.$key} = $val;
                 }
             }
 
             // Append application specific cookie prefix
-            if (config_item('cookie_prefix')) {
+            if ($this->_config['cookie_prefix']) {
                 $this->_csrf_cookie_name = $this->_config['cookie_prefix'].$this->_csrf_cookie_name;
             }
 
@@ -156,7 +156,7 @@ class Security
     public function csrf_set_cookie()
     {
         $expire = time() + $this->_csrf_expire;
-        $secure_cookie = (config_item('cookie_secure') === true) ? 1 : 0;
+        $secure_cookie = ($this->_config['cookie_secure'] === true) ? 1 : 0;
 
         if ($secure_cookie && (empty($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) === 'off')) {
             return false;
@@ -745,7 +745,7 @@ class Security
      */
     protected function _decode_entity($match)
     {
-        return $this->entity_decode($match[0], strtoupper(config_item('charset')));
+        return $this->entity_decode($match[0], strtoupper($this->_config['charset']));
     }
 
     // --------------------------------------------------------------------

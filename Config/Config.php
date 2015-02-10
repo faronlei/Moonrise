@@ -6,6 +6,8 @@
 
 return array(
 
+    'charset' => 'UTF-8',
+
     # cookie 相关
     'cookie_prefix' => '',
     'cookie_domain' => '',

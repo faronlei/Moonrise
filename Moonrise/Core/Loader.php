@@ -11,8 +11,10 @@ class Loader
 {
     public static function AutoLoad($class)
     {
-        # todo check path
-        require(BASE_DIR . '/' . str_replace('\\', '/', $class) . '.php');
+        $file_path = BASE_DIR . '/' . str_replace('\\', '/', $class) . '.php';
+        if (file_exists($file_path)) {
+            require($file_path);
+        }
     }
 
 

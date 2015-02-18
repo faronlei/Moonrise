@@ -7,7 +7,7 @@
 
 namespace Moonrise\Core;
 
-class MView
+class View
 {
     public function __construct()
     {

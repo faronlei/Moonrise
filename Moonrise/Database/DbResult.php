@@ -1,13 +1,13 @@
 <?php
 /**
- * 模型基类
+ * 查询结果类
  *
  * @author itsmikej
  */
 
-namespace Moonrise\Core;
+namespace Moonrise\Database;
 
-class MModel
+abstract class DbResult
 {
     public function __construct()
     {

@@ -5,15 +5,16 @@
 
 namespace Control;
 
-use Moonrise\Core\Request;
+use Moonrise\Core\Controller;
+use Moonrise\Core\Loader;
 
-class Index
+class Index extends Controller
 {
     public function index()
     {
-        # 使用注册器
-        $a = new Request();
-        $b = $a->request('mikej', 1);
+        $b = $this->request->get('name', MR_TYPE_DEFAULT, array('xss_clean'=>1));
         dump($b);
+        $idxModel = Loader::loadModel('index');
+        dump($idxModel->showData());
     }
 }

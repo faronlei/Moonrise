@@ -7,10 +7,13 @@
 
 namespace Moonrise\Core;
 
-abstract class MController
+abstract class Controller
 {
+    protected $request;
+
     public function __construct()
     {
-
+        # todo 使用注册器
+        $this->request = new Request();
     }
 }

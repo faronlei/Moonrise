@@ -13,6 +13,8 @@ class Model
 {
     protected $service;
 
+    protected $db;
+
     public function __construct()
     {
 

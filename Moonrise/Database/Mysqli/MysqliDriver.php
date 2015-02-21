@@ -124,6 +124,11 @@ class MysqliDriver extends DbDriver
     }
 
 
+    /**
+     * 查询
+     * @param $sql
+     * @return MysqliResult
+     */
     public function query($sql)
     {
         if (!$this->db && !$this->ping()) {
@@ -190,6 +195,133 @@ class MysqliDriver extends DbDriver
     }
     ########################################
 
+
+    /**
+     * 准备预处理语句
+     * @param $sql
+     * @return \mysqli_stmt
+     */
+    public function prepare($sql)
+    {
+        return $this->db->prepare($sql);
+    }
+
+
+    /**
+     * 预处理查询语句
+     * prepare -> bind_param -> execute -> store_result -> bind_result -> fetch
+     *
+     * @param $sql
+     * @param $param  array('idsb', &$foo, &$bar ...)
+     * @return bool|null
+     */
+    public function setResultQuery($sql, $param)
+    {
+        $array = null;
+        if (!$this->db->connect_errno) {
+
+            $stmt = $this->setStatement($sql, $param);
+
+            try {
+                if ($stmt->execute()) {
+
+                    # store result
+                    $stmt->store_result();
+
+                    $var = array();
+                    $data = array();
+
+                    # 取字段信息
+                    $meta = $stmt->result_metadata();
+
+                    while ($field = $meta->fetch_field()) {
+                        $var[] = & $data[$field->name];
+                    }
+
+                    call_user_func_array(array($stmt, 'bind_result'), $var);
+
+                    $i = 0;
+
+                    # 取出结果 到 绑定的变量中
+                    # $stmt->data_seek(2); # 移动数据库指针
+                    while ($stmt->fetch()) {
+                        $array[$i] = array();
+                        foreach ($data as $k=>$v) {
+                            $array[$i][$k] = $v;
+                        }
+                        $i++;
+                    }
+
+                    $stmt->free_result();
+                    $stmt->close();
+
+                }
+            } catch (\Exception $e) {
+                $array = false;
+            }
+
+        }
+
+        return $array;
+    }
+
+    /**
+     * 非查询的预处理
+     * @param $sql
+     * @param $param
+     * @return bool
+     */
+    public function setNoResultQuery($sql, $param)
+    {
+        $validation = false;
+
+        if (!$this->db->connect_errno) {
+
+            $stmt = $this->setStatement($sql, $param);
+
+            try {
+                if ($stmt->execute()) {
+
+                    $stmt->close();
+                    $validation = true;
+
+                }
+            } catch (\Exception $e) {
+                $validation = false;
+            }
+        }
+
+        return $validation;
+
+    }
+
+
+    /**
+     * prepare一个stmt，并绑定
+     * @param $sql
+     * @param $param
+     * @return \mysqli_stmt
+     */
+    public function setStatement($sql, $param)
+    {
+        try {
+            $stmt = $this->prepare($sql);
+
+            $ref = new \ReflectionClass('mysqli_stmt');
+
+            if (count($param) != 0) {
+                $method = $ref->getMethod('bind_param');
+                $method->invokeArgs($stmt, $param);
+            }
+
+        } catch (\Exception $e) {
+            if ($stmt) {
+                $stmt->close();
+            }
+        }
+
+        return $stmt;
+    }
 
     /**
      * 关闭数据库

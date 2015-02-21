@@ -99,6 +99,15 @@ class MysqliResult extends DbResult
     }
 
     /**
+     * 获取一个字段的信息
+     * @return object
+     */
+    public function fetch_field()
+    {
+        return $this->resultObject->fetch_field();
+    }
+
+    /**
      * 获取所有字段的信息
      * @return array
      */

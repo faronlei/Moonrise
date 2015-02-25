@@ -83,12 +83,21 @@ class MysqliDriver extends DbDriver
         return $this->db->real_connect($hostname, $username, $password, $database, $port, null, $flag);
     }
 
+    /**
+     * 设置编码
+     * @param $char_set
+     */
     protected function setCharset($char_set)
     {
         $this->server_info['char_set'] = $char_set;
         $this->db->set_charset($char_set);
     }
 
+    /**
+     * 选择数据库
+     * @param $database
+     * @return bool
+     */
     public function selectDb($database)
     {
         if ($this->server_info['database'] == $database) {
@@ -98,11 +107,18 @@ class MysqliDriver extends DbDriver
         $this->db->select_db($database);
     }
 
+    /**
+     * 重连数据库
+     */
     public function reConnect()
     {
         $this->init($this->config);
     }
 
+    /**
+     * ping
+     * @return bool
+     */
     public function ping()
     {
         return $this->db->ping();
@@ -206,6 +222,35 @@ class MysqliDriver extends DbDriver
         return $this->db->prepare($sql);
     }
 
+    /**
+     * 绑定参数
+     * @param \mysqli_stmt $stmt
+     * @param array $params
+     */
+    public function bindParam(\mysqli_stmt $stmt, array $params)
+    {
+        call_user_func_array(array($stmt, 'bind_param'), $params);
+    }
+
+    /**
+     * 执行一个预处理查询
+     * @param \mysqli_stmt $stmt
+     */
+    public function execute(\mysqli_stmt $stmt)
+    {
+        $stmt->execute();
+    }
+
+    /**
+     * 绑定结果到变量
+     * @param \mysqli_stmt $stmt
+     * @param array $params
+     */
+    public function bindResult(\mysqli_stmt $stmt, array $params)
+    {
+        $stmt->store_result();
+        call_user_func_array(array($stmt, 'bind_result'), $params);
+    }
 
     /**
      * 预处理查询语句

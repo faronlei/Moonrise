@@ -52,7 +52,7 @@ abstract class DbDriver
     }
 
     abstract public function connect($hostname, $username, $password, $databases, $port=3306, $flags=null, $options=null);
-    abstract public function re_connect();
+    abstract public function reConnect();
 
     /**
      * 查询

@@ -49,12 +49,49 @@ class Loader
      */
     public static function loadModel($name)
     {
+        if (!$name) {
+            $name = self::getDefaultName();
+        }
         $path = BASE_DIR . '/Model/' . $name . '.php';
         if (!file_exists($path)) {
-            show_error('model file not exits!');
+            $message = 'model file not exits!';
+            if (MR_DEBUG) {
+                $message = $path . ' ' . $message;
+            }
+            show_error($message);
         }
         $class = '\\Model\\' . str_replace('/', '\\', $name);
         return new $class;
+    }
+
+    /**
+     * 加载view
+     * @param $name
+     */
+    public static function loadView($name=null)
+    {
+        if (!$name) {
+            $name = self::getDefaultName();
+        }
+        $path = BASE_DIR . '/View/' . $name . '.php';
+        if (!file_exists($path)) {
+            $message = 'view file not exits!';
+            if (MR_DEBUG) {
+                $message = $path . ' ' . $message;
+            }
+            show_error($message);
+        }
+        require($path);
+    }
+
+    /**
+     * 加载默认文件路径
+     * @return string
+     */
+    protected static function getDefaultName()
+    {
+        $route = Registry::getInstance()->get('route');
+        return trim($route['directory'] . '/' . $route['class'], '/');
     }
 
 }

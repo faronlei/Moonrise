@@ -16,4 +16,9 @@ abstract class Controller
         # todo 使用注册器
         $this->request = new Request();
     }
+
+    public function display($mode)
+    {
+
+    }
 }

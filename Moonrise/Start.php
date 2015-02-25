@@ -7,7 +7,6 @@
 
 namespace Moonrise;
 
-use Moonrise\Component\Log;
 use Moonrise\Core\Error;
 use Moonrise\Core\Exception;
 use Moonrise\Core\Uri;
@@ -38,6 +37,10 @@ class Start
     {
         $route = $this->uri->getRequest();
 
+        # shit
+        if (isset($route['directory'])) {
+            $route['directory'] = str_replace('/', '\\', $route['directory']);
+        }
         $class = str_replace(array('\\\\'), '\\', trim('Control\\'.$route['directory'].'\\'.$route['class'], '/'));
 
         $c = new $class;

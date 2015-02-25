@@ -168,22 +168,27 @@ class Uri
         if (file_exists(BASE_DIR . '/Control/' . implode('/', $segments) . '.php')) {
             $this->setClass(array_pop($segments));
             $this->setMethod($method);
-            $this->setDirectory(array_pop($segments));
+            $this->setDirectory(implode('/', $segments));
             return;
         }
 
-        # todo fix this
         array_push($segments, $method);
-        echo '{'.implode('/', $segments).'}: Not Found!';die;
+
+        $message = '{'.implode('/', $segments).'}: Not Found!';
+        show_error($message);
     }
 
     public function getRequest()
     {
-        return array(
+        $route = array(
             'directory' => $this->getDirectory(),
             'class'     => $this->getClass(),
             'method'    => $this->getMethod()
         );
+
+        # 写入到注册器中
+        Registry::getInstance()->set('route', $route);
+        return $route;
     }
 
     protected function setDirectory($directory)

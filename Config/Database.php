@@ -23,6 +23,19 @@ return array(
             'options'   => array(),
             'flags'     => array()
         ),
+        'pdotest' => array(
+            'hostname'  => 'localhost',
+            'username'  => 'root',
+            'password'  => 'secret',
+            'database'  => 'itsmikej',
+            'port'      => 3306,
+            'db_driver' => 'pdo',
+            'db_prefix' => '',
+            'char_set'  => 'utf8',
+            #'db_collat' => 'utf8_general_ci',
+            'options'   => array(),
+            'flags'     => array()
+        ),
         # ...
     )
 

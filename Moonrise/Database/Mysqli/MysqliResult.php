@@ -19,6 +19,12 @@ class MysqliResult extends DbResult
     public $error;
     public $errno;
 
+    protected $fetch_map = array(
+        'assoc'    => MYSQLI_ASSOC,
+        'num'      => MYSQLI_NUM,
+        'both'     => MYSQLI_BOTH
+    );
+
     public function __construct(\mysqli_result $mysqliRes)
     {
         $this->resultObject = $mysqliRes;
@@ -26,15 +32,16 @@ class MysqliResult extends DbResult
 
     /**
      * 取出所有数据
-     * @param int $type
+     * @param string $mode_name
      * @return array|mixed
      */
-    public function fetchAll($type=MYSQLI_ASSOC)
+    public function fetchAll($mode_name='assoc')
     {
+        $mode = $this->getFetchMode($mode_name);
         if (method_exists($this->resultObject, 'fetch_all')) {
-            $res = $this->resultObject->fetch_all($type);
+            $res = $this->resultObject->fetch_all($mode);
         } else {
-            for ($res = array(); $tmp = $this->resultObject->fetch_array($type);) {
+            for ($res = array(); $tmp = $this->resultObject->fetch_array($mode);) {
                 $res[] = $tmp;
             }
         }
@@ -44,23 +51,25 @@ class MysqliResult extends DbResult
     /**
      * 取第$num行数据
      * @param $num
-     * @param int $type
+     * @param string $mode_name
      * @return mixed
      */
-    public function result($num, $type=MYSQLI_BOTH)
+    public function result($num, $mode_name='both')
     {
+        $mode = $this->getFetchMode($mode_name);
         $this->resultObject->data_seek($num);
-        return $this->fetch_array($type);
+        return $this->fetch_array($mode);
     }
 
     /**
      * 返回关联|索引
-     * @param int $type
+     * @param string $mode_name
      * @return mixed
      */
-    public function fetchArray($type=MYSQLI_BOTH)
+    public function fetchArray($mode_name='both')
     {
-        return $this->resultObject->fetch_array($type);
+        $mode = $this->getFetchMode($mode_name);
+        return $this->resultObject->fetch_array($mode);
     }
 
     /**
@@ -83,15 +92,15 @@ class MysqliResult extends DbResult
 
     /**
      * 返回一个对象，可指定要实例化的类
-     * @param string $classname
+     * @param string $class_name
      * @param array $params
      * @return object|\stdClass
      */
-    public function fetchObject($classname='', array $params=array())
+    public function fetchObject($class_name='', array $params=array())
     {
         if (isset($name)) {
             # 可返回一个实例化的类， $params 传递给构造函数
-            return $this->resultObject->fetch_object($classname, $params);
+            return $this->resultObject->fetch_object($class_name, $params);
         } else {
             return $this->resultObject->fetch_object();
         }
@@ -132,6 +141,17 @@ class MysqliResult extends DbResult
     public function free()
     {
         $this->resultObject->free();
+    }
+
+    /**
+     * 获取fetch方式
+     * @param $mode_name
+     * @return mixed
+     */
+    public function getFetchMode($mode_name)
+    {
+        return isset($this->fetch_map[$mode_name]) ?
+            $this->fetch_map[$mode_name] : $this->fetch_map['assoc'];
     }
 
     public function __get($name)

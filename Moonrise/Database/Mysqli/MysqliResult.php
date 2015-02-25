@@ -1,6 +1,6 @@
 <?php
 /**
- * mysqli结果集
+ * Mysqli结果集
  *
  * @author itsmikej
  */
@@ -29,7 +29,7 @@ class MysqliResult extends DbResult
      * @param int $type
      * @return array|mixed
      */
-    public function fetch_all($type=MYSQLI_ASSOC)
+    public function fetchAll($type=MYSQLI_ASSOC)
     {
         if (method_exists($this->resultObject, 'fetch_all')) {
             $res = $this->resultObject->fetch_all($type);
@@ -58,7 +58,7 @@ class MysqliResult extends DbResult
      * @param int $type
      * @return mixed
      */
-    public function fetch_array($type=MYSQLI_BOTH)
+    public function fetchArray($type=MYSQLI_BOTH)
     {
         return $this->resultObject->fetch_array($type);
     }
@@ -67,7 +67,7 @@ class MysqliResult extends DbResult
      * 关联数组返回一行
      * @return array
      */
-    public function fetch_assoc()
+    public function fetchAssoc()
     {
         return $this->resultObject->fetch_assoc();
     }
@@ -76,7 +76,7 @@ class MysqliResult extends DbResult
      * 索引数组返回一行
      * @return mixed
      */
-    public function fetch_row()
+    public function fetchRow()
     {
         return $this->resultObject->fetch_row();
     }
@@ -87,7 +87,7 @@ class MysqliResult extends DbResult
      * @param array $params
      * @return object|\stdClass
      */
-    public function fetch_object($classname='', array $params=array())
+    public function fetchObject($classname='', array $params=array())
     {
         if (isset($name)) {
             # 可返回一个实例化的类， $params 传递给构造函数
@@ -102,7 +102,7 @@ class MysqliResult extends DbResult
      * 获取一个字段的信息
      * @return object
      */
-    public function fetch_field()
+    public function fetchField()
     {
         return $this->resultObject->fetch_field();
     }
@@ -111,7 +111,7 @@ class MysqliResult extends DbResult
      * 获取所有字段的信息
      * @return array
      */
-    public function fetch_fields()
+    public function fetchFields()
     {
         return $this->resultObject->fetch_fields();
     }
@@ -121,7 +121,7 @@ class MysqliResult extends DbResult
      * @param $num
      * @return object
      */
-    public function fetch_field_direct($num)
+    public function fetchFieldDirect($num)
     {
         return $this->resultObject->fetch_field_direct($num);
     }

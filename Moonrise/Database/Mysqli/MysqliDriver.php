@@ -83,13 +83,13 @@ class MysqliDriver extends DbDriver
         return $this->db->real_connect($hostname, $username, $password, $database, $port, null, $flag);
     }
 
-    protected function set_charset($char_set)
+    protected function setCharset($char_set)
     {
         $this->server_info['char_set'] = $char_set;
         $this->db->set_charset($char_set);
     }
 
-    public function select_db($database)
+    public function selectDb($database)
     {
         if ($this->server_info['database'] == $database) {
             return true;
@@ -98,7 +98,7 @@ class MysqliDriver extends DbDriver
         $this->db->select_db($database);
     }
 
-    public function re_connect()
+    public function reConnect()
     {
         $this->init($this->config);
     }
@@ -132,13 +132,13 @@ class MysqliDriver extends DbDriver
     public function query($sql)
     {
         if (!$this->db && !$this->ping()) {
-            $this->re_connect();
+            $this->reConnect();
         }
 
         $res = new MysqliResult($this->simpleQuery($sql));
 
         $res->time_exec     = $this->time_exec;
-        $res->affect_rows   = $this->affected_rows();
+        $res->affect_rows   = $this->affectedRows();
         $res->error         = $this->error();
         $res->errno         = $this->errno();
         $res->sql           = $this->sql;
@@ -150,7 +150,7 @@ class MysqliDriver extends DbDriver
      * 影响行数
      * @return int
      */
-    public function affected_rows()
+    public function affectedRows()
     {
         return $this->db->affected_rows;
     }
@@ -179,7 +179,7 @@ class MysqliDriver extends DbDriver
         $this->db->autocommit($mode);
     }
 
-    public function begin_transaction()
+    public function beginTransaction()
     {
         $this->db->begin_transaction();
     }

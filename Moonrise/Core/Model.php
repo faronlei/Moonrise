@@ -25,14 +25,19 @@ class Model
     /**
      * 连接数据库
      *
+     * @param null $service
      * @return \Moonrise\Database\DbDriver
      */
-    protected function connectDB()
+    protected function connectDB($service=null)
     {
-        if (!isset(self::$driver[$this->service])) {
-            self::$driver[$this->service] = DB::bootStrap($this->service);
+        if (!$service) {
+            $service = $this->service;
         }
-        return self::$driver[$this->service];
+
+        if (!isset(self::$driver[$service])) {
+            self::$driver[$service] = DB::bootStrap($service);
+        }
+        return self::$driver[$service];
 
 
     }

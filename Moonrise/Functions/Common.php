@@ -1,5 +1,10 @@
 <?php
+/**
+ * 常用函数库
+ */
 
+
+# 移除非法字符
 if (!function_exists('remove_invisible_characters')) {
     function remove_invisible_characters($str, $url_encoded = true)
     {
@@ -23,6 +28,7 @@ if (!function_exists('remove_invisible_characters')) {
     }
 }
 
+# 大整数处理
 if (!function_exists('int64val')) {
     if (PHP_INT_SIZE >=8) {
         function int64val($int)
@@ -60,11 +66,10 @@ if (!function_exists('int64val')) {
 }
 
 
-
 if (!function_exists('show_error')) {
     function show_error($message)
     {
-        # todo 界面友好
+        # todo 界面友好，纪录日志
         die($message);
     }
 }

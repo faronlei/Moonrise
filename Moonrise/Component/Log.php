@@ -136,7 +136,7 @@ class Log
      */
     protected function getLogFileName()
     {
-        return 'information.log';
+        return 'Information.log';
     }
 
 

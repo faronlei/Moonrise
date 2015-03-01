@@ -66,9 +66,10 @@ class Loader
 
     /**
      * 加载view
-     * @param $name
+     * @param null $name
+     * @param array $output
      */
-    public static function loadView($name=null)
+    public static function loadView($name=null, array $output)
     {
         if (!$name) {
             $name = self::getDefaultName();
@@ -81,6 +82,7 @@ class Loader
             }
             show_error($message);
         }
+        extract($output);
         require($path);
     }
 

@@ -19,7 +19,7 @@ return array(
             'db_driver' => 'mysqli',
             'db_prefix' => '',
             'char_set'  => 'utf8',
-            #'db_collat' => 'utf8_general_ci',
+            'db_collat' => 'utf8_general_ci',
             'options'   => array(),
             'flags'     => array()
         ),
@@ -32,7 +32,7 @@ return array(
             'db_driver' => 'pdo',
             'db_prefix' => '',
             'char_set'  => 'utf8',
-            #'db_collat' => 'utf8_general_ci',
+            'db_collat' => 'utf8_general_ci',
             'options'   => array(),
             'flags'     => array()
         ),

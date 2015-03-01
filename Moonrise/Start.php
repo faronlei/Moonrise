@@ -44,7 +44,7 @@ class Start
         $class = str_replace(array('\\\\'), '\\', trim('Control\\'.$route['directory'].'\\'.$route['class'], '/'));
 
         $c = new $class;
-        call_user_func_array(array($c, $route['method']), array($_GET));
+        call_user_func_array(array($c, $route['method']), array());
 
 
     }

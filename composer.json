@@ -1,5 +1,7 @@
 {
   "require": {
+    "php": ">=5.4.0",
+    "illuminate/database": "*",
     "symfony/var-dumper": "~2.6",
     "monolog/monolog": "~1.12"
   }
